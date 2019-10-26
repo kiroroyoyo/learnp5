@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>点与线</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #container {
+            width: 100%;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container"></div>
+    <script src="./js/p5.min.js"></script>
+    <script>
+        const s = (p) => {
+            class Point{
+                constructor(x, y, w, c){
+                    this.x = x
+                    this.y = y
+                    this.w = w
+                    this.c = c
+                }
+                display(){
+                    p.stroke(this.c)
+                    p.strokeWeight(this.w)
+                    p.point(this.x, this.y)
+                }
+            }
+            let x = 100;
+            let y = 100;
+            p.setup = function () {
+                let myCanvas = p.createCanvas(p.windowWidth, p.windowHeight);
+                myCanvas.parent('container');
+                render()
+            }
+            p.draw = function () {
+                // render()
+            }
+            render = function() {
+                
+                const points = new Array(1000)
+                for (let i = 0; i < points.length; i++) {
+                    let x = p.random(p.width)
+                    let random = p.pow(p.random(1), .2)
+                    let y = p.map(random, 0, 1, 0, p.height)
+                    let w = p.random(1, 20)
+                    let c = p.color(p.random(200))
+                    points[i] = new Point(x, y, w, c)
+                }
+                points.forEach(point => {
+                    point.display()
+                });
+            }
+        }
+        let myp5 = new p5(s)
+    </script>
+</body>
+
+</html>

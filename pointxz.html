@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>点与线</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #container {
+            width: 100%;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container"></div>
+    <script src="./js/p5.min.js"></script>
+    <script>
+        const s = (p) => {
+            class Point {
+                constructor(x, y,w, c) {
+                    this.x = x
+                    this.y = y
+                    this.w = w
+                    this.c = c
+                }
+                distance(point) {
+                    let dx = this.x - point.x
+                    let dy = this.y - point.y
+                    return p.sqrt(dx * dx + dy * dy)
+                }
+                display(){
+                    p.stroke(this.c)
+                    p.strokeWeight(this.w)
+                    p.point(this.x, this.y)
+                }
+            }
+            let time = 0
+            let pixelw = 30
+            const points = new Array(300)
+            let img;
+            p.preload = function () {
+                img = p.loadImage('image/xz2.jpg');
+            }
+            p.setup = function () {
+                let myCanvas = p.createCanvas(p.windowWidth, p.windowHeight);
+                p.imageMode(p.CENTER);
+                img.resize(p.windowWidth, p.windowWidth/img.width*img.height)
+                img.loadPixels();
+                myCanvas.parent('container');
+                for (let i = 0; i < points.length; i++) {
+                    let x = p.floor(p.random(img.width));
+                    let y = p.floor(p.random(img.height));
+                    points[i] = new Point(x, y, pixelw, img.get(x, y))
+                    
+                }
+            }
+            p.draw = function () {
+
+                if (time < 200) {
+                    time += 1
+                    if(pixelw > 4){
+                        pixelw -= 0.4
+                    }
+                    render()
+                }
+
+            }
+            render = function () {
+
+                for (let i = 0; i < points.length; i++) {
+                    points[i].x = p.floor(p.random(img.width));
+                    points[i].y = p.floor(p.random(img.height));
+                    points[i].w = pixelw
+                    points[i].c = img.get(points[i].x, points[i].y)
+                }
+                for (let i = 0; i < points.length; i++) {
+                    // if((points[i].c[0] >= 158 && points[i].c[0] <= 165) 
+                    // && (points[i].c[1] >= 178 && points[i].c[1] <= 186) 
+                    // && (points[i].c[2] >= 170) && points[i].c[2] <= 186){
+
+                    // }else
+                    points[i].display()
+                    
+                }
+
+            }
+        }
+        let myp5 = new p5(s)
+    </script>
+</body>
+
+</html>

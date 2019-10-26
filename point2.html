@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>点与线</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #container {
+            width: 100%;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container"></div>
+    <script src="./js/p5.min.js"></script>
+    <script>
+        const s = (p) => {
+            class Point {
+                constructor(x, y) {
+                    this.x = x
+                    this.y = y
+                }
+                distance(point) {
+                    let dx = this.x - point.x
+                    let dy = this.y - point.y
+                    return p.sqrt(dx * dx + dy * dy)
+                }
+            }
+            let maxDis = 0
+            const points = new Array(200)
+            p.setup = function () {
+                let myCanvas = p.createCanvas(p.windowWidth, p.windowHeight);
+                myCanvas.parent('container');
+                for (let i = 0; i < points.length; i++) {
+                    points[i] = new Point(p.random(p.width), p.random(p.height))
+                }
+            }
+            p.draw = function () {
+
+                if (maxDis < 400) {
+                    maxDis += 1
+                    render()
+                }
+
+            }
+            render = function () {
+
+
+                for (let i = 0; i < points.length; i++) {
+                    let a = points[i]
+                    for (let j = i + 1; j < points.length; j++) {
+                        let b = points[j];
+                        let d = a.distance(b)
+                        if (d < maxDis) {
+                            let alpha = p.map(d, 0, maxDis, 255, 0)
+                            let weight = p.map(d, 0, maxDis, 1, 0)
+                            p.stroke(0, alpha)
+                            p.strokeWeight(weight)
+                            p.line(a.x, a.y, b.x, b.y)
+                        }
+                    }
+                }
+
+            }
+        }
+        let myp5 = new p5(s)
+    </script>
+</body>
+
+</html>
