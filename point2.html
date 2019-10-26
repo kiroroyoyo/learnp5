@@ -36,7 +36,7 @@
                 }
             }
             let maxDis = 0
-            const points = new Array(200)
+            const points = new Array(100)
             p.setup = function () {
                 let myCanvas = p.createCanvas(p.windowWidth, p.windowHeight);
                 myCanvas.parent('container');
@@ -46,7 +46,7 @@
             }
             p.draw = function () {
 
-                if (maxDis < 400) {
+                if (maxDis < 300) {
                     maxDis += 1
                     render()
                 }
